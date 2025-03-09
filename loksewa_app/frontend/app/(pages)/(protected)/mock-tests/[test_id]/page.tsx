@@ -11,10 +11,16 @@ const mockTests = [
   { id: 4, title: "Loksewa 2078 Mock Test" },
 ];
 
+// Define the type for your test objects
+type MockTest = {
+  id: number;
+  title: string;
+};
+
 export default function MockTestDetailPage() {
   const { test_id } = useParams();
   const router = useRouter();
-  const [test, setTest] = useState(null);
+  const [test, setTest] = useState<MockTest | null>(null);
 
   useEffect(() => {
     if (test_id) {
