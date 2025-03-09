@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Navbar() {
   const [theme, setTheme] = useState('light');
-  const [isExpanded, setIsExpanded] = useState(true);
+  // const [isExpanded, setIsExpanded] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -25,9 +25,9 @@ export default function Navbar() {
     return <FaSun />;
   };
 
-  const toggleNavbar = () => {
-    setIsExpanded(!isExpanded);
-  };
+  // const toggleNavbar = () => {
+  //   setIsExpanded(!isExpanded);
+  // };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);

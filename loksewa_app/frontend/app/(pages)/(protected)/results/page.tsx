@@ -12,10 +12,12 @@ export default function ResultsPage() {
 
     let calculatedScore = 0;
     storedResults.forEach((result, index) => {
+      if (result !== undefined && questions[index]) {
       if (result === questions[index].correct) {
         calculatedScore += 1;
-      } else if (result !== null) {
+      } else if (result === null) {
         calculatedScore -= 1;
+      }
       }
     });
     setScore(calculatedScore);

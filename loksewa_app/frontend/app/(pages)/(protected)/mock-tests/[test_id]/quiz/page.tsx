@@ -5,13 +5,12 @@ import { useParams } from 'next/navigation';
 import Navbar from '../../../../../components/Navbar';
 import { FiClock } from 'react-icons/fi';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { BsCheckCircle } from 'react-icons/bs';
 import questions from '../../../../../lib/questions.json'; // Import questions from JSON file
 
 export default function QuizPage() {
   const { test_id } = useParams();
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
+  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<number>(3600); // 1 hour in seconds
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -21,11 +20,11 @@ export default function QuizPage() {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (seconds) => {
+  const formatTime = (seconds: number): string => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
-    return `${h}:${m}:${s}`;
+    return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
   const navigateQuestion = (direction: 'prev' | 'next') => {
