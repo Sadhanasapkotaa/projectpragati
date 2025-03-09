@@ -1,0 +1,237 @@
+[
+    {
+        "question": "What is the capital of Nepal?",
+        "options": ["Kathmandu", "Pokhara", "Lalitpur", "Bhaktapur"],
+        "correct": 0
+    },
+    {
+        "question": "Who is known as the 'Light of Asia'?",
+        "options": ["Gautama Buddha", "Siddhartha Gautama", "Ashoka", "Chandragupta Maurya"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the highest peak in Nepal?",
+        "options": ["Mount Everest", "K2", "Kanchenjunga", "Lhotse"],
+        "correct": 0
+    },
+    {
+        "question": "What is the national flower of Nepal?",
+        "options": ["Rhododendron", "Lotus", "Sunflower", "Rose"],
+        "correct": 0
+    },
+    {
+        "question": "Which river is known as the 'Sorrow of Bihar'?",
+        "options": ["Kosi", "Ganga", "Yamuna", "Brahmaputra"],
+        "correct": 0
+    },
+    {
+        "question": "Who was the first King of unified Nepal?",
+        "options": ["Prithvi Narayan Shah", "Mahendra", "Birendra", "Gyanendra"],
+        "correct": 0
+    },
+    {
+        "question": "What is the national animal of Nepal?",
+        "options": ["Cow", "Tiger", "Elephant", "Rhinoceros"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the longest river in Nepal?",
+        "options": ["Ghaghara", "Karnali", "Gandaki", "Bagmati"],
+        "correct": 1
+    },
+    {
+        "question": "Who wrote the national anthem of Nepal?",
+        "options": ["Pradeep Kumar Rai", "Byakul Maila", "Madan Krishna Shrestha", "Hari Prasad Rimal"],
+        "correct": 1
+    },
+    {
+        "question": "What is the currency of Nepal?",
+        "options": ["Nepalese Rupee", "Indian Rupee", "Dollar", "Euro"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest lake in Nepal?",
+        "options": ["Rara Lake", "Phewa Lake", "Begnas Lake", "Tilicho Lake"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the current President of Nepal?",
+        "options": ["Ram Chandra Poudel", "Bidya Devi Bhandari", "Sher Bahadur Deuba", "Pushpa Kamal Dahal"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the national bird of Nepal?",
+        "options": ["Lophophorus", "Peacock", "Sparrow", "Eagle"],
+        "correct": 0
+    },
+    {
+        "question": "What is the official language of Nepal?",
+        "options": ["Nepali", "Hindi", "English", "Maithili"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest district of Nepal by area?",
+        "options": ["Dolpa", "Humla", "Jumla", "Karnali"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the current Prime Minister of Nepal?",
+        "options": ["Pushpa Kamal Dahal", "Sher Bahadur Deuba", "KP Sharma Oli", "Madhav Kumar Nepal"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the smallest district of Nepal by area?",
+        "options": ["Bhaktapur", "Lalitpur", "Kathmandu", "Kavrepalanchok"],
+        "correct": 0
+    },
+    {
+        "question": "What is the national sport of Nepal?",
+        "options": ["Volleyball", "Football", "Cricket", "Basketball"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the oldest university in Nepal?",
+        "options": ["Tribhuvan University", "Kathmandu University", "Pokhara University", "Purbanchal University"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the author of 'Muna Madan'?",
+        "options": ["Laxmi Prasad Devkota", "Bhanubhakta Acharya", "Parijat", "Madan Krishna Shrestha"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest city in Nepal by population?",
+        "options": ["Kathmandu", "Pokhara", "Lalitpur", "Biratnagar"],
+        "correct": 0
+    },
+    {
+        "question": "What is the national tree of Nepal?",
+        "options": ["Rhododendron", "Banyan", "Peepal", "Sal"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female President of Nepal?",
+        "options": ["Bidya Devi Bhandari", "Sushila Karki", "Onsari Gharti Magar", "Chitra Lekha Yadav"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the highest lake in Nepal?",
+        "options": ["Tilicho Lake", "Rara Lake", "Phewa Lake", "Gosaikunda"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female Chief Justice of Nepal?",
+        "options": ["Sushila Karki", "Meera Dhungana", "Sapana Pradhan Malla", "Anup Raj Sharma"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest national park in Nepal?",
+        "options": ["Bardiya National Park", "Chitwan National Park", "Sagarmatha National Park", "Rara National Park"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first person to climb Mount Everest?",
+        "options": ["Tenzing Norgay", "Edmund Hillary", "George Mallory", "Reinhold Messner"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the oldest temple in Nepal?",
+        "options": ["Pashupatinath Temple", "Swayambhunath Stupa", "Boudhanath Stupa", "Manakamana Temple"],
+        "correct": 0
+    },
+    {
+        "question": "What is the national dish of Nepal?",
+        "options": ["Dal Bhat", "Momo", "Thukpa", "Sel Roti"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest waterfall in Nepal?",
+        "options": ["Hyatung Waterfall", "Devi's Fall", "Rara Waterfall", "Pachal Waterfall"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female pilot of Nepal?",
+        "options": ["Raksha Rana", "Yogmaya Neupane", "Pasang Lhamu Sherpa", "Anju Khatiwada"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest valley in Nepal?",
+        "options": ["Kathmandu Valley", "Pokhara Valley", "Chitwan Valley", "Dang Valley"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female Deputy Prime Minister of Nepal?",
+        "options": ["Shailaja Acharya", "Sahana Pradhan", "Hisila Yami", "Sujata Koirala"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest glacier in Nepal?",
+        "options": ["Khumbu Glacier", "Langtang Glacier", "Ngozumpa Glacier", "Imja Glacier"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female Speaker of the House of Representatives in Nepal?",
+        "options": ["Onsari Gharti Magar", "Bidya Devi Bhandari", "Sushila Karki", "Chitra Lekha Yadav"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest cave in Nepal?",
+        "options": ["Mahendra Cave", "Bat Cave", "Chameri Cave", "Gupteshwor Cave"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female Foreign Minister of Nepal?",
+        "options": ["Sahana Pradhan", "Sujata Koirala", "Hisila Yami", "Shailaja Acharya"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest river basin in Nepal?",
+        "options": ["Karnali Basin", "Gandaki Basin", "Koshi Basin", "Bagmati Basin"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female Governor of Nepal?",
+        "options": ["Yadav Chandra Sharma", "Parbati Thapa", "Durga Shrestha", "Anuradha Koirala"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest hydropower project in Nepal?",
+        "options": ["Upper Tamakoshi", "Kali Gandaki", "Marsyangdi", "Kulekhani"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female Mayor of Kathmandu?",
+        "options": ["Bidya Sundar Shakya", "Ranju Darshana", "Sushila Shrestha", "Anuradha Koirala"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest wildlife reserve in Nepal?",
+        "options": ["Shuklaphanta Wildlife Reserve", "Parsa Wildlife Reserve", "Koshi Tappu Wildlife Reserve", "Dhorpatan Hunting Reserve"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female Minister of Defense in Nepal?",
+        "options": ["Bidya Devi Bhandari", "Sahana Pradhan", "Hisila Yami", "Sujata Koirala"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest airport in Nepal?",
+        "options": ["Tribhuvan International Airport", "Gautam Buddha Airport", "Pokhara Airport", "Bharatpur Airport"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female Minister of Finance in Nepal?",
+        "options": ["Sahana Pradhan", "Sujata Koirala", "Hisila Yami", "Shailaja Acharya"],
+        "correct": 0
+    },
+    {
+        "question": "Which is the largest industrial area in Nepal?",
+        "options": ["Birgunj Industrial Area", "Hetauda Industrial Area", "Bhairahawa Industrial Area", "Nepalgunj Industrial Area"],
+        "correct": 0
+    },
+    {
+        "question": "Who is the first female Minister of Education in Nepal?",
+        "options": ["Sahana Pradhan", "Sujata Koirala", "Hisila Yami", "Shailaja Acharya"],
+        "correct": 0
+    }
+]

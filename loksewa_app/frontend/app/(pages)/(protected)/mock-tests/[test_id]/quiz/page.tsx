@@ -6,12 +6,7 @@ import Navbar from '../../../../../components/Navbar';
 import { FiClock } from 'react-icons/fi';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { BsCheckCircle } from 'react-icons/bs';
-
-const mockQuestions = Array.from({ length: 50 }, (_, i) => ({
-  id: i + 1,
-  question: `Question ${i + 1}`,
-  options: ["Option 1", "Option 2", "Option 3", "Option 4"],
-}));
+import questions from '../../../../../lib/questions.json'; // Import questions from JSON file
 
 export default function QuizPage() {
   const { test_id } = useParams();
@@ -36,7 +31,7 @@ export default function QuizPage() {
   const navigateQuestion = (direction: 'prev' | 'next') => {
     if (direction === 'prev' && currentQuestion > 0) {
       setCurrentQuestion(curr => curr - 1);
-    } else if (direction === 'next' && currentQuestion < mockQuestions.length - 1) {
+    } else if (direction === 'next' && currentQuestion < questions.length - 1) {
       setCurrentQuestion(curr => curr + 1);
     }
   };
@@ -58,16 +53,16 @@ export default function QuizPage() {
           <div className="lg:col-span-1 bg-white p-4 rounded-lg shadow">
             <h3 className="text-lg font-semibold mb-4">Questions</h3>
             <div className="grid grid-cols-5 gap-2">
-              {mockQuestions.map((q, index) => (
+              {questions.map((q, index) => (
                 <button
-                  key={q.id}
+                  key={index}
                   onClick={() => setCurrentQuestion(index)}
                   className={`h-10 w-10 rounded-full flex items-center justify-center text-sm font-medium
                     ${index === currentQuestion 
                       ? 'bg-blue-600 text-white' 
                       : 'bg-gray-100 hover:bg-gray-200'}`}
                 >
-                  {q.id}
+                  {index + 1}
                 </button>
               ))}
             </div>
@@ -75,9 +70,9 @@ export default function QuizPage() {
 
           {/* Question Display */}
           <div className="lg:col-span-3 bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-6">{mockQuestions[currentQuestion].question}</h2>
+            <h2 className="text-xl font-semibold mb-6">{questions[currentQuestion].question}</h2>
             <div className="space-y-4">
-              {mockQuestions[currentQuestion].options.map((option, index) => (
+              {questions[currentQuestion].options.map((option, index) => (
                 <button
                   key={index}
                   className="w-full text-left p-4 rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors"
@@ -97,7 +92,7 @@ export default function QuizPage() {
               </button>
               <button
                 onClick={() => navigateQuestion('next')}
-                disabled={currentQuestion === mockQuestions.length - 1}
+                disabled={currentQuestion === questions.length - 1}
                 className="flex items-center px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50"
               >
                 Next <IoIosArrowForward className="ml-2" />
