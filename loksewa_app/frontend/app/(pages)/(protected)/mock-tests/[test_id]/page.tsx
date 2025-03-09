@@ -21,7 +21,7 @@ export default function MockTestDetailPage() {
       // Ensure test_id is a string (not an array)
       const singleTestId = Array.isArray(test_id) ? test_id[0] : test_id;
       const foundTest = mockTests.find((test) => test.id === parseInt(singleTestId));
-      setTest(foundTest);
+      setTest(foundTest || null);
     }
   }, [test_id]);
 
