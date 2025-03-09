@@ -1,7 +1,9 @@
-// No "use client" directive here - this is a server component
-import MockTestClient from './MockTestClient';
+"use client";
 
-// Mock tests data for static generation
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import Navbar from '../../../../components/Navbar';
+
 const mockTests = [
   { id: 1, title: "Loksewa 2081 Mock Test" },
   { id: 2, title: "Loksewa 2080 Mock Test" },
@@ -9,12 +11,41 @@ const mockTests = [
   { id: 4, title: "Loksewa 2078 Mock Test" },
 ];
 
-export function generateStaticParams() {
-  return mockTests.map(test => ({
-    test_id: test.id.toString()
-  }));
-}
+// Define the type for your test objects
+type MockTest = {
+  id: number;
+  title: string;
+};
 
 export default function MockTestDetailPage() {
-  return <MockTestClient />;
+  const { test_id } = useParams();
+  const router = useRouter();
+  const [test, setTest] = useState<MockTest | null>(null);
+
+  useEffect(() => {
+    if (test_id) {
+      // Ensure test_id is a string (not an array)
+      const singleTestId = Array.isArray(test_id) ? test_id[0] : test_id;
+      const foundTest = mockTests.find((test) => test.id === parseInt(singleTestId));
+      setTest(foundTest || null);
+    }
+  }, [test_id]);
+
+  if (!test) {
+    return <div>Mock Test not found</div>;
+  }
+
+  const handleStartNow = () => {
+    router.push(`/mock-tests/${test_id}/quiz`);
+  };
+
+  return (
+    <div>
+      <Navbar />
+      <h1>{test.title}</h1>
+      {/* Add exam details here */}
+      <p>Exam details go here...</p>
+      <button onClick={handleStartNow}>Start Now</button>
+    </div>
+  );
 }
