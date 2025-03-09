@@ -1,4 +1,3 @@
-// No "use client" directive here - this is a server component
 import QuizClient from './QuizClient';
 
 // Define the mock test IDs that should be pre-generated

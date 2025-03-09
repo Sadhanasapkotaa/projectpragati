@@ -7,8 +7,13 @@ import { FiClock } from 'react-icons/fi';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import questions from '../../../../../lib/questions.json'; // Import questions from JSON file
 
+interface Question {
+  question: string;
+  options: string[];
+}
+
 export default function QuizClient() {
-  const { test_id } = useParams();
+  const { test_id } = useParams<{ test_id: string }>();
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number>(3600); // 1 hour in seconds
 
@@ -35,6 +40,11 @@ export default function QuizClient() {
     }
   };
 
+  const currentQuestionData = questions[currentQuestion];
+  if (!currentQuestionData) {
+    return <div>No questions available.</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -55,6 +65,7 @@ export default function QuizClient() {
               {questions.map((q, index) => (
                 <button
                   key={index}
+                  aria-label={`Go to question ${index + 1}`}
                   onClick={() => setCurrentQuestion(index)}
                   className={`h-10 w-10 rounded-full flex items-center justify-center text-sm font-medium
                     ${index === currentQuestion 
@@ -69,9 +80,9 @@ export default function QuizClient() {
 
           {/* Question Display */}
           <div className="lg:col-span-3 bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-6">{questions[currentQuestion].question}</h2>
+            <h2 className="text-xl font-semibold mb-6">{currentQuestionData.question}</h2>
             <div className="space-y-4">
-              {questions[currentQuestion].options.map((option, index) => (
+              {currentQuestionData.options.map((option, index) => (
                 <button
                   key={index}
                   className="w-full text-left p-4 rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors"
