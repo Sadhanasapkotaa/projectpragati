@@ -3,7 +3,7 @@ name: Deploy Next.js to GitHub Pages
 on:
   push:
     branches:
-      - mvp/0.1  # Change this to match your main branch
+      - MVP/v2  # Change this to match your main branch
 
 jobs:
   build-and-deploy:
