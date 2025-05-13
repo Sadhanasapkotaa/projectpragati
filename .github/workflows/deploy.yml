@@ -3,7 +3,7 @@ name: Deploy Next.js to GitHub Pages
 on:
   push:
     branches:
-      - MVP/v2  # Change this to match your main branch
+      - mvp/0.1  # Change this to match your main branch
 
 jobs:
   build-and-deploy:
@@ -18,17 +18,31 @@ jobs:
         with:
           node-version: '18'  # Use LTS version of Node
 
+      - name: Clean node_modules and package-lock.json
+        working-directory: ./frontend
+        run: |
+          rm -rf node_modules
+          rm -f package-lock.json
+
       - name: Install dependencies
         working-directory: ./frontend
-        run: npm ci  # Use ci for cleaner, deterministic builds
+        run: npm install  # Use install to regenerate package-lock.json
 
       - name: Install gh-pages package
         working-directory: ./frontend
         run: npm install -D gh-pages
 
+      - name: Debug packages
+        working-directory: ./frontend
+        run: |
+          echo "Listing installed packages:"
+          npm list --depth=0
+
       - name: Build the project
         working-directory: ./frontend
-        run: npm run build
+        run: |
+          # Next.js build with error output
+          npm run build || { echo "Build failed, showing directory structure for troubleshooting:"; ls -la; exit 1; }
         env:
           # Add this to ensure Next.js knows it's a static export
           NEXT_PUBLIC_BASE_PATH: /projectpragati
