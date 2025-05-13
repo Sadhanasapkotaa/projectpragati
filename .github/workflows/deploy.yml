@@ -3,7 +3,7 @@ name: Deploy React/Next.js App to GitHub Pages
 on:
   push:
     branches:
-      - version_two   # Adjust to your branch name
+      - version_two  
 
 jobs:
   build:
