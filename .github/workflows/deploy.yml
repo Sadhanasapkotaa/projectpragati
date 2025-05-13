@@ -3,36 +3,41 @@ name: Deploy Next.js to GitHub Pages
 on:
   push:
     branches:
-      - version_two  # Change to the branch you want to trigger deployment
+      - MVP/v2  # Change this to match your main branch
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '18'  # Use LTS version of Node
 
       - name: Install dependencies
         working-directory: ./frontend
-        run: npm ci
+        run: npm ci  # Use ci for cleaner, deterministic builds
 
-      - name: Build and export site
+      - name: Install gh-pages package
         working-directory: ./frontend
-        run: |
-          npm run build
-          npm run export
+        run: npm install -D gh-pages
 
-      - name: Add custom CNAME
-        run: echo 'pragati.earth' > ./frontend/out/CNAME
+      - name: Build the project
+        working-directory: ./frontend
+        run: npm run build
+        env:
+          # Add this to ensure Next.js knows it's a static export
+          NEXT_PUBLIC_BASE_PATH: /projectpragati
+
+      - name: Add .nojekyll file
+        run: touch ./frontend/out/.nojekyll
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/out
+          folder: frontend/out  # The folder the action should deploy
+          branch: gh-pages  # The branch the action should deploy to
