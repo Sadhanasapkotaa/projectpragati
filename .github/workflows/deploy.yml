@@ -1,33 +1,38 @@
-name: Deploy React/Next.js App to GitHub Pages
+name: Deploy Next.js to GitHub Pages
 
 on:
   push:
     branches:
-      - version_two
+      - version_two  # Change to the branch you want to trigger deployment
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Use the appropriate Node.js version
+          node-version: '18'
 
       - name: Install dependencies
-        working-directory: ./frontend  # Install dependencies from the frontend directory
-        run: npm install
+        working-directory: ./frontend
+        run: npm ci
 
-      - name: Build the project
-        working-directory: ./frontend  # Build the project from the frontend directory
-        run: npm run build
+      - name: Build and export site
+        working-directory: ./frontend
+        run: |
+          npm run build
+          npm run export
+
+      - name: Add custom CNAME
+        run: echo 'pragati.earth' > ./frontend/out/CNAME
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/out  # Adjust to where the build output is stored (use 'out' if Next.js)
+          publish_dir: ./frontend/out
