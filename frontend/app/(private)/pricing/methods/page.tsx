@@ -2,7 +2,11 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <p>E-sewa</p>
+      <p>Khalti</p>
+      <p>Stripe</p>
+    </div>
   )
 }
 
