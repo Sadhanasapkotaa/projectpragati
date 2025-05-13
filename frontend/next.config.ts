@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
-/** @type {import('next').NextConfig} */
-const nextConfig: NextConfig = {
+const nextConfig = {
   output: 'export',
-  trailingSlash: true, // recommended for GitHub Pages
+  trailingSlash: true
 };
-
 export default nextConfig;
