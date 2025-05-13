@@ -2,9 +2,13 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Sadhanasapkotaa.github.io/projectpragati",
   "scripts": {
-    "dev": "next dev --turbopack",
     "build": "next build",
+    "export": "next export",
+    "predeploy": "npm run build && npm run export",
+    "deploy": "gh-pages -d out",
+    "dev": "next dev --turbopack",
     "start": "next start",
     "lint": "next lint"
   },
