@@ -1,10 +1,14 @@
+"use client";
 import Image from "next/image";
 import PublicHeader from "../components/shared/publicHeader";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="bg-white">
-      <PublicHeader />
+      <PublicHeader />  
 
       {/* Hero Section */}
       <main className="my-7 p-16 mx-auto flex justify-between items-start bg-[#FDF9F2] w-[80%] rounded-3xl">
@@ -17,7 +21,10 @@ export default function Home() {
             children to learn and grow! It is designed for the children between 
             ages 3 to 12.
           </p>
-          <button className="bg-[#8A2BE2] text-white px-10 py-4 rounded-lg font-semibold text-lg hover:bg-opacity-90 transition-colors">
+          <button 
+            onClick={() => router.push('/register')}
+            className="bg-[#8A2BE2] text-white px-10 py-4 rounded-lg font-semibold text-lg hover:bg-opacity-90 transition-colors"
+          >
             START NOW
           </button>
         </div>

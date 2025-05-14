@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 
 interface FormData {
   email: string;
@@ -19,6 +20,10 @@ interface ErrorMessages {
 }
 
 const LoginPage = () => {
+  const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
+  
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -51,8 +56,8 @@ const LoginPage = () => {
         break;
       
       case 'password':
-        isFieldValid = value.length >= 8;
-        errorMessage = isFieldValid ? '' : 'Password must be at least 8 characters';
+        isFieldValid = value.length >= 6;
+        errorMessage = isFieldValid ? '' : 'Password must be at least 6 characters';
         break;
     }
 
@@ -71,32 +76,41 @@ const LoginPage = () => {
     setTouched(prev => ({ ...prev, [name]: true }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched({ email: true, password: true });
+    setApiError('');
     
     Object.keys(formData).forEach(field => 
       validateField(field as keyof FormData, formData[field as keyof FormData])
     );
 
     if (isValid.email && isValid.password) {
-      console.log('Form submitted:', formData);
+      setIsLoading(true);
+      try {
+        await login(formData.email, formData.password);
+      } catch (error: any) {
+        setApiError(error.response?.data?.message || 'Login failed. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
       <Image
-        src="/assets/svg/Background.svg"
+        src="/assets/svg/CreateAccountBackground.svg"
         alt="Background Pattern"
         fill
-        className="contain object-cover"
+        className="object-cover"
         priority
       />
 
       <div className="min-h-screen flex items-center justify-center relative">
         <div className="w-[80%] flex justify-left">
           <div className="rounded-3xl p-12 w-[550px] bg-white/95 backdrop-blur-sm">
+            {/* Logo */}
             <div className="flex mb-16">
               <Image
                 src="/assets/svg/PragatiHeaderLogo.svg"
@@ -112,6 +126,12 @@ const LoginPage = () => {
             </div>
 
             <form className="space-y-5" onSubmit={handleSubmit}>
+              {apiError && (
+                <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
+                  {apiError}
+                </div>
+              )}
+
               <div className="relative">
                 <input
                   type="email"
@@ -160,9 +180,10 @@ const LoginPage = () => {
 
               <button
                 type="submit"
-                className="w-full bg-purple-600 text-white py-4 rounded-lg hover:bg-purple-700 transition-colors font-semibold text-lg"
+                disabled={isLoading}
+                className={`w-full bg-purple-600 text-white py-4 rounded-lg hover:bg-purple-700 transition-colors font-semibold text-lg ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                SIGN IN
+                {isLoading ? 'SIGNING IN...' : 'SIGN IN'}
               </button>
             </form>
 

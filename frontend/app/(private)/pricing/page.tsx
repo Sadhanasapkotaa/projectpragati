@@ -10,78 +10,76 @@ interface PlanProps {
   isPopular?: boolean;
 }
 
-const PricingCard: React.FC<PlanProps> = ({ title, price, description, buttonText, isPopular }) => (
-  <div className={`bg-white rounded-3xl p-8 shadow-lg w-[300px] relative ${isPopular ? 'border-2 border-purple-500' : ''}`}>
+const PricingCard: React.FC<PlanProps> = ({ title, price, description, buttonText, isPopular }) => (  <div className={`bg-white rounded-3xl p-8 shadow-sm w-[300px] relative z-10 ${isPopular ? 'border border-[#7474F7]' : ''}`}>
     {isPopular && (
-      <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-500 text-white px-4 py-1 rounded-full text-sm">
+      <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#7474F7] text-white px-4 py-1 rounded-full text-sm">
         Most Popular
       </span>
     )}
-    <h3 className="text-xl font-bold text-gray-800 mb-4">{title}</h3>
-    <div className="flex items-baseline mb-4">
-      <span className="text-gray-500 text-lg">₹</span>
-      <span className="text-4xl font-bold text-gray-900">{price}</span>
-      {price > 0 && <span className="text-gray-500 ml-1">/month</span>}
+    <h3 className="text-lg text-[#7474F7] font-medium mb-4 text-center">{title}</h3>
+    <div className="flex items-center justify-center mb-4">
+      <span className="text-lg font-medium bg-[#7474F7] text-white px-4 py-1 rounded-full">Rs. {price}</span>
     </div>
-    <p className="text-gray-600 mb-6 min-h-[60px]">{description}</p>
+    <p className="text-[#6B6B6B] text-sm mb-6 min-h-[80px]">{description}</p>
+    {title === "Yearly Plan" && (
+      <p className="text-[#7474F7] text-sm font-medium mb-4">FLAT 10% OFF</p>
+    )}
     <button 
-      className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-        isPopular 
-          ? 'bg-purple-600 text-white hover:bg-purple-700' 
-          : 'bg-purple-100 text-purple-600 hover:bg-purple-200'
-      }`}
+      className={`w-full py-2 rounded-xl text-sm font-medium text-[#7474F7] bg-white border border-[#7474F7] hover:bg-[#7474F7] hover:text-white transition-colors`}
     >
       {buttonText}
     </button>
   </div>
 );
 
-const Page = () => {
-  const plans = [
+const Page = () => {  const plans = [
     {
       title: "Starter Plan",
       price: 0,
-      description: "Perfect to get started and explore our core features at no cost",
-      buttonText: "Start Free",
+      description: "This plan includes all learning features but doesn't have features like themes, avatars, etc.",
+      buttonText: "SUBSCRIBE",
     },
     {
       title: "Monthly Plan",
-      price: 29,
-      description: "Complete solution for individuals who need more features and flexibility",
-      buttonText: "Subscribe Now",
+      price: 25,
+      description: "This plan includes the complete subscription of all the features of this app for an entire month.",
+      buttonText: "SUBSCRIBE",
       isPopular: true,
     },
     {
       title: "Yearly Plan",
       price: 270,
-      description: "Best value for money with all features and priority support",
-      buttonText: "Save More",
+      description: "This plan includes the complete subscription of all features for an entire year.",
+      buttonText: "SUBSCRIBE",
     },
   ];
-
-  return (
-    <div className="min-h-screen relative overflow-hidden">
-      <Image
-        src="/assets/svg/SubscriptionBackgroundBlob.svg"
-        alt="Background Pattern"
-        fill
-        className="object-cover"
-        priority
-      />
-      
+  return (    <div className="min-h-screen relative overflow-hidden bg-white">
       <div className="relative z-10 min-h-screen">
-        <div className="container mx-auto px-4 py-20">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Subscription Plans</h1>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Choose the perfect plan that suits your needs. All plans come with our core features.
-            </p>
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-12">
+            <div className="flex items-center justify-start mb-8">
+              <Image
+                src="/assets/svg/PragatiHeaderLogo.svg"
+                alt="Pragati Logo"
+                width={250}
+                height={200}
+                priority
+              />
+            </div>
           </div>
-
-          <div className="flex flex-wrap justify-center gap-8">
-            {plans.map((plan, index) => (
-              <PricingCard key={index} {...plan} />
-            ))}
+          
+          <div className="relative mx-auto max-w-6xl">
+            <div className="bg-[#E6F4FF] rounded-[40px] pb-32 pt-12 px-8 mb-8">
+              <h1 className="text-[#2D2D2D] text-4xl font-medium mb-16 text-center">Our Subscription Plans:</h1>
+              
+              <div className="flex flex-wrap justify-center gap-8 relative z-10">
+                {plans.map((plan, index) => (
+                  <PricingCard key={index} {...plan} />
+                ))}
+              </div>
+              
+              <div className="absolute bottom-0 left-0 right-0 h-[45%] bg-[#7474F7] rounded-t-[40px] rounded-b-[40px] z-0"></div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,10 +1,17 @@
 "use client";
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const VerifyOTPPage = () => {
+  const { verifyOTP } = useAuth();
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const router = useRouter();
 
   const handleChange = (index: number, value: string) => {
     if (isNaN(Number(value))) return;
@@ -26,13 +33,41 @@ const VerifyOTPPage = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const otpString = otp.join('');
     if (otpString.length === 6) {
-      console.log('OTP submitted:', otpString);
+      setIsLoading(true);
+      setError('');
+      try {
+        await verifyOTP(otpString);
+        setSuccess(true);
+        // Redirect to login after 2 seconds
+        setTimeout(() => {
+          router.push('/login');
+        }, 2000);
+      } catch (err: any) {
+        setError(err.response?.data?.message || 'Failed to verify OTP. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
+
+  if (success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-green-600 mb-4">
+            OTP Verified Successfully!
+          </h2>
+          <p className="text-gray-600">
+            Redirecting to login page...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -76,21 +111,37 @@ const VerifyOTPPage = () => {
                     onChange={e => handleChange(index, e.target.value)}
                     onKeyDown={e => handleKeyDown(index, e)}
                     className="w-12 h-12 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none text-gray-700"
+                    disabled={isLoading}
                   />
                 ))}
               </div>
 
+              {error && (
+                <div className="text-red-500 text-sm text-center">
+                  {error}
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full bg-purple-600 text-white py-4 rounded-lg hover:bg-purple-700 transition-colors font-semibold text-lg"
-                disabled={otp.join('').length !== 6}
+                className={`w-full bg-purple-600 text-white py-4 rounded-lg hover:bg-purple-700 transition-colors font-semibold text-lg ${
+                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={otp.join('').length !== 6 || isLoading}
               >
-                VERIFY
+                {isLoading ? 'VERIFYING...' : 'VERIFY'}
               </button>
             </form>
 
             <div className="mt-6 text-center">
-              <button className="text-purple-600 hover:text-purple-700 font-medium">
+              <button 
+                className="text-purple-600 hover:text-purple-700 font-medium"
+                disabled={isLoading}
+                onClick={() => {
+                  // TODO: Implement resend OTP functionality
+                  console.log('Resend OTP clicked');
+                }}
+              >
                 Resend Code
               </button>
             </div>

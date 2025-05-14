@@ -2,62 +2,69 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
-  username: string;
   email: string;
-  phone: string;
+  first_name: string;
+  last_name: string;
   password: string;
-  coupon: string;
+  password2: string;
 }
 
 interface ValidationState {
-  username: boolean;
   email: boolean;
-  phone: boolean;
+  first_name: boolean;
+  last_name: boolean;
   password: boolean;
-  coupon: boolean;
+  password2: boolean;
 }
 
 interface ErrorMessages {
-  username: string;
   email: string;
-  phone: string;
+  first_name: string;
+  last_name: string;
   password: string;
-  coupon: string;
+  password2: string;
 }
 
 const RegisterPage = () => {
+  const router = useRouter();
+  const { register } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
+
   const [formData, setFormData] = useState<FormData>({
-    username: '',
     email: '',
-    phone: '',
+    first_name: '',
+    last_name: '',
     password: '',
-    coupon: ''
+    password2: ''
   });
 
   const [touched, setTouched] = useState<ValidationState>({
-    username: false,
     email: false,
-    phone: false,
+    first_name: false,
+    last_name: false,
     password: false,
-    coupon: false
+    password2: false
   });
 
   const [errors, setErrors] = useState<ErrorMessages>({
-    username: '',
     email: '',
-    phone: '',
+    first_name: '',
+    last_name: '',
     password: '',
-    coupon: ''
+    password2: ''
   });
 
   const [isValid, setIsValid] = useState<ValidationState>({
-    username: false,
     email: false,
-    phone: false,
+    first_name: false,
+    last_name: false,
     password: false,
-    coupon: false
+    password2: false
   });
 
   const validateField = (name: keyof FormData, value: string) => {
@@ -65,9 +72,10 @@ const RegisterPage = () => {
     let errorMessage = '';
 
     switch (name) {
-      case 'username':
-        isFieldValid = value.length >= 3;
-        errorMessage = isFieldValid ? '' : 'Username must be at least 3 characters';
+      case 'first_name':
+      case 'last_name':
+        isFieldValid = value.length >= 2;
+        errorMessage = isFieldValid ? '' : 'Must be at least 2 characters';
         break;
       
       case 'email':
@@ -76,25 +84,29 @@ const RegisterPage = () => {
         errorMessage = isFieldValid ? '' : 'Please enter a valid email address';
         break;
       
-      case 'phone':
-        const phoneRegex = /^\d{10}$/;
-        isFieldValid = phoneRegex.test(value.replace(/\D/g, ''));
-        errorMessage = isFieldValid ? '' : 'Please enter a valid 10-digit phone number';
-        break;
-      
       case 'password':
         isFieldValid = value.length >= 8 && /[A-Z]/.test(value) && /[0-9]/.test(value);
         errorMessage = isFieldValid ? '' : 'Password must be at least 8 characters with 1 uppercase letter and 1 number';
         break;
       
-      case 'coupon':
-        isFieldValid = value === '' || value.length >= 5;
-        errorMessage = isFieldValid ? '' : 'Invalid coupon code';
+      case 'password2':
+        isFieldValid = value === formData.password;
+        errorMessage = isFieldValid ? '' : 'Passwords do not match';
         break;
     }
 
     setIsValid(prev => ({ ...prev, [name]: isFieldValid }));
     setErrors(prev => ({ ...prev, [name]: errorMessage }));
+
+    // Validate password confirmation when password changes
+    if (name === 'password') {
+      const password2Valid = formData.password2 === value;
+      setIsValid(prev => ({ ...prev, password2: password2Valid }));
+      setErrors(prev => ({ 
+        ...prev, 
+        password2: password2Valid ? '' : 'Passwords do not match'
+      }));
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,17 +120,18 @@ const RegisterPage = () => {
     setTouched(prev => ({ ...prev, [name]: true }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const allFields = ['username', 'email', 'phone', 'password'] as const;
+    setApiError('');
+    const allFields = ['email', 'first_name', 'last_name', 'password', 'password2'] as const;
     
     // Mark all fields as touched
     setTouched({
-      username: true,
       email: true,
-      phone: true,
+      first_name: true,
+      last_name: true,
       password: true,
-      coupon: true
+      password2: true
     });
 
     // Validate all fields
@@ -128,10 +141,24 @@ const RegisterPage = () => {
     const isFormValid = allFields.every(field => isValid[field]);
     
     if (isFormValid) {
-      // TODO: Submit form
-      console.log('Form submitted:', formData);
+      setIsLoading(true);
+      try {
+        await register(formData);
+        // Redirect will be handled by AuthContext
+      } catch (error: any) {
+        if (error.response) {
+          setApiError(error.response.data?.message || 'Registration failed. Please try again.');
+        } else if (error.request) {
+          setApiError('Network error. Please check your connection.');
+        } else {
+          setApiError('An unexpected error occurred. Please try again.');
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <Image
@@ -164,29 +191,6 @@ const RegisterPage = () => {
             <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="relative">
                 <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`w-full px-4 py-3 border-2 ${touched.username && !isValid.username ? 'border-red-300' : 'border-gray-200'} rounded-lg focus:border-purple-500 focus:outline-none peer text-gray-700 font-normal placeholder-gray-600`}
-                placeholder=" "
-                />
-                <label 
-                htmlFor="username" 
-                className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-                >
-                Enter Username
-                </label>
-                <span className={`absolute right-3 top-3 ${isValid.username ? 'text-green-500' : 'text-red-500'}`}>•</span>
-                {touched.username && errors.username && (
-                <p className="text-red-500 text-xs mt-1">{errors.username}</p>
-                )}
-            </div>
-
-            <div className="relative">
-                <input
                 type="email"
                 id="email"
                 name="email"
@@ -210,24 +214,47 @@ const RegisterPage = () => {
 
             <div className="relative">
                 <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
+                type="text"
+                id="first_name"
+                name="first_name"
+                value={formData.first_name}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={`w-full px-4 py-3 border-2 ${touched.phone && !isValid.phone ? 'border-red-300' : 'border-gray-200'} rounded-lg focus:border-purple-500 focus:outline-none peer text-gray-700 font-normal placeholder-gray-600`}
+                className={`w-full px-4 py-3 border-2 ${touched.first_name && !isValid.first_name ? 'border-red-300' : 'border-gray-200'} rounded-lg focus:border-purple-500 focus:outline-none peer text-gray-700 font-normal placeholder-gray-600`}
                 placeholder=" "
                 />
                 <label 
-                htmlFor="phone" 
+                htmlFor="first_name" 
                 className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                 >
-                Phone Number
+                First Name
                 </label>
-                <span className={`absolute right-3 top-3 ${isValid.phone ? 'text-green-500' : 'text-red-500'}`}>•</span>
-                {touched.phone && errors.phone && (
-                <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                <span className={`absolute right-3 top-3 ${isValid.first_name ? 'text-green-500' : 'text-red-500'}`}>•</span>
+                {touched.first_name && errors.first_name && (
+                <p className="text-red-500 text-xs mt-1">{errors.first_name}</p>
+                )}
+            </div>
+
+            <div className="relative">
+                <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`w-full px-4 py-3 border-2 ${touched.last_name && !isValid.last_name ? 'border-red-300' : 'border-gray-200'} rounded-lg focus:border-purple-500 focus:outline-none peer text-gray-700 font-normal placeholder-gray-600`}
+                placeholder=" "
+                />
+                <label 
+                htmlFor="last_name" 
+                className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                >
+                Last Name
+                </label>
+                <span className={`absolute right-3 top-3 ${isValid.last_name ? 'text-green-500' : 'text-red-500'}`}>•</span>
+                {touched.last_name && errors.last_name && (
+                <p className="text-red-500 text-xs mt-1">{errors.last_name}</p>
                 )}
             </div>
 
@@ -256,48 +283,43 @@ const RegisterPage = () => {
 
             <div className="relative">
                 <input
-                type="text"
-                id="coupon"
-                name="coupon"
-                value={formData.coupon}
+                type="password"
+                id="password2"
+                name="password2"
+                value={formData.password2}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={`w-full px-4 py-3 border-2 ${touched.coupon && !isValid.coupon ? 'border-red-300' : 'border-gray-200'} rounded-lg focus:border-purple-500 focus:outline-none peer text-gray-700 font-normal placeholder-gray-600`}
+                className={`w-full px-4 py-3 border-2 ${touched.password2 && !isValid.password2 ? 'border-red-300' : 'border-gray-200'} rounded-lg focus:border-purple-500 focus:outline-none peer text-gray-700 font-normal placeholder-gray-600`}
                 placeholder=" "
                 />
                 <label 
-                htmlFor="coupon" 
+                htmlFor="password2" 
                 className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                 >
-                COUPON
+                Confirm Password
                 </label>
-                <span className={`absolute right-3 top-3 ${isValid.coupon ? 'text-green-500' : 'text-red-500'}`}>•</span>
-                {touched.coupon && errors.coupon && (
-                <p className="text-red-500 text-xs mt-1">{errors.coupon}</p>
+                <span className={`absolute right-3 top-3 ${isValid.password2 ? 'text-green-500' : 'text-red-500'}`}>•</span>
+                {touched.password2 && errors.password2 && (
+                <p className="text-red-500 text-xs mt-1">{errors.password2}</p>
                 )}
             </div>
 
             <button
                 type="submit"
-                className="w-full bg-purple-600 text-white py-4 rounded-lg hover:bg-purple-700 transition-colors font-semibold text-lg"
+                disabled={isLoading}
+                className={`w-full bg-purple-600 text-white py-4 rounded-lg hover:bg-purple-700 transition-colors font-semibold text-lg ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-                SIGN UP
+                {isLoading ? 'SIGNING UP...' : 'SIGN UP'}
             </button>
+
+            {apiError && (
+                <div className="mt-4 text-center text-red-500 text-sm">
+                  {apiError}
+                </div>
+              )}
             </form>
 
             <div className="mt-6 text-center">
-            {/* <p className="text-sm text-gray-500 mb-4">Or continue with</p>
-            <div className="flex justify-center gap-4">
-                <button className="p-2 border-2 border-gray-200 rounded-lg hover:border-gray-300">
-                <Image src="/google.svg" alt="Google" width={24} height={24} />
-                </button>
-                <button className="p-2 border-2 border-gray-200 rounded-lg hover:border-gray-300">
-                <Image src="/apple.svg" alt="Apple" width={24} height={24} />
-                </button>
-                <button className="p-2 border-2 border-gray-200 rounded-lg hover:border-gray-300">
-                <Image src="/facebook.svg" alt="Facebook" width={24} height={24} />
-                </button>
-            </div> */}
             </div>
 
             <div className="mt-6 text-center text-sm text-gray-600">
